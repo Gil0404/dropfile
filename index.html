@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AIStamp - Timestamp Your Files</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
@@ -24,7 +24,15 @@
     <div class="bg-white rounded-lg p-4 max-w-2xl w-full relative">
       <button id="closeVideo" class="absolute top-2 right-2 text-gray-600 hover:text-red-600">&times;</button>
       <div class="aspect-w-16 aspect-h-9">
-        <iframe id="videoFrame" class="w-full h-96" src="" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen title="Video player"></iframe>
+        <iframe
+          id="videoFrame"
+          class="w-full h-96"
+          src=""
+          title="YouTube video player"
+          frameborder="0"
+          allow="autoplay; encrypted-media"
+          allowfullscreen>
+        </iframe>
       </div>
     </div>
   </div>
@@ -41,20 +49,28 @@
     </div>
   </header>
 
-  <!-- Hero Section -->
+  <!-- Hero / Timestamp Section -->
   <main id="home" class="min-h-screen flex items-center justify-center px-4">
     <div class="bg-white shadow-2xl rounded-xl p-8 max-w-md w-full space-y-6">
       <h2 class="text-2xl font-bold text-center">Upload Your File for Timestamping</h2>
+
+      <!-- File Upload -->
       <div id="dropzone" class="w-full p-6 border-2 border-dashed border-gray-300 rounded-lg text-center text-gray-400 hover:border-blue-400 transition cursor-pointer">
         <p class="text-sm">Drag and drop your file here or click to select from your device</p>
         <input id="fileInput" type="file" class="hidden" />
       </div>
-      <button id="convertBtn" class="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition">Generate Timestamp</button>
+
+      <!-- Timestamp Button -->
+      <button id="convertBtn" class="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition">
+        Generate Timestamp
+      </button>
+
+      <!-- Result -->
       <div id="result" class="text-center text-green-600 font-medium hidden">Timestamp generated successfully!</div>
     </div>
   </main>
 
-  <!-- About -->
+  <!-- About Us Section -->
   <section id="about" class="bg-white py-16 px-4">
     <div class="max-w-4xl mx-auto text-center">
       <h2 class="text-3xl font-bold mb-4">About AIStamp</h2>
@@ -84,7 +100,7 @@
     const closeVideo = document.getElementById('closeVideo');
     const videoFrame = document.getElementById('videoFrame');
 
-    const videoURL = "https://www.youtube.com/embed/dQw4w9WgXcQ?start=94&autoplay=1";
+    const videoURL = "https://www.youtube.com/embed/Rht8rS4cR1s?start=115&autoplay=1";
 
     const showLoading = () => loadingModal.classList.remove('hidden');
     const hideLoading = () => loadingModal.classList.add('hidden');
@@ -148,5 +164,6 @@
 
     closeVideo.addEventListener('click', hideVideo);
   </script>
+
 </body>
 </html>
