@@ -2,8 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AIStamp - Timestamp Your Files</title>
+       <title>AIStamp - Timestamp Your Files</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 text-gray-800">
@@ -20,13 +19,19 @@
   </div>
 
   <!-- Video Modal -->
-  <div id="videoModal" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center hidden z-50">
-    <div class="bg-white rounded-lg p-4 max-w-2xl w-full relative">
+  <div id="videoModal" class="fixed inset-0 bg-black flex items-center justify-center hidden z-50">
+    <div id="videoLoader" class="absolute inset-0 bg-black flex items-center justify-center z-50">
+      <svg class="animate-spin h-12 w-12 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="white" stroke-width="4"></circle>
+        <path class="opacity-75" fill="white" d="M4 12a8 8 0 018-8v8H4z"></path>
+      </svg>
+    </div>
+    <div class="bg-white rounded-lg p-4 max-w-2xl w-full relative z-40">
       <button id="closeVideo" class="absolute top-2 right-2 text-gray-600 hover:text-red-600">&times;</button>
       <div class="aspect-w-16 aspect-h-9">
         <iframe
           id="videoFrame"
-          class="w-full h-96"
+          class="w-full h-96 hidden"
           src=""
           title="YouTube video player"
           frameborder="0"
@@ -97,22 +102,28 @@
     const convertBtn = document.getElementById('convertBtn');
     const loadingModal = document.getElementById('loadingModal');
     const videoModal = document.getElementById('videoModal');
+    const videoLoader = document.getElementById('videoLoader');
     const closeVideo = document.getElementById('closeVideo');
     const videoFrame = document.getElementById('videoFrame');
 
-    const videoURL = "https://www.youtube.com/embed/Rht8rS4cR1s?start=115&autoplay=1&modestbranding=1&showinfo=0&controls=0
-";
+    const videoURL = "https://www.youtube.com/embed/Rht8rS4cR1s?start=115&autoplay=1&modestbranding=1&controls=0&rel=0&iv_load_policy=3&disablekb=1&fs=0&playsinline=1&enablejsapi=1";
 
     const showLoading = () => loadingModal.classList.remove('hidden');
     const hideLoading = () => loadingModal.classList.add('hidden');
 
     const showVideo = () => {
-      videoFrame.src = videoURL;
       videoModal.classList.remove('hidden');
+      setTimeout(() => {
+        videoLoader.style.display = 'none';
+        videoFrame.src = videoURL;
+        videoFrame.classList.remove('hidden');
+      }, 3000);
     };
 
     const hideVideo = () => {
       videoModal.classList.add('hidden');
+      videoLoader.style.display = 'flex';
+      videoFrame.classList.add('hidden');
       videoFrame.src = "";
     };
 
@@ -165,6 +176,5 @@
 
     closeVideo.addEventListener('click', hideVideo);
   </script>
-
 </body>
 </html>
