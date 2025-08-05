@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AIStamp - Timestamp Your Files</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+  <!-- Loading Modal -->
+  <div id="loadingModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+    <div class="bg-white rounded-lg p-6 flex flex-col items-center">
+      <svg class="animate-spin h-8 w-8 text-blue-600 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+      </svg>
+      <p class="text-sm text-gray-700">Processing file...</p>
+    </div>
+  </div>
+
+  <!-- Video Modal -->
+  <div id="videoModal" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center hidden z-50">
+    <div class="bg-white rounded-lg p-4 max-w-2xl w-full relative">
+      <button id="closeVideo" class="absolute top-2 right-2 text-gray-600 hover:text-red-600">&times;</button>
+      <div class="aspect-w-16 aspect-h-9">
+        <iframe id="videoFrame" class="w-full h-96" src="" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen title="Video player"></iframe>
+      </div>
+    </div>
+  </div>
+
+  <!-- Navbar -->
+  <header class="bg-white shadow-md sticky top-0 z-10">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+      <h1 class="text-xl font-bold">AIStamp</h1>
+      <nav class="space-x-6">
+        <a href="#home" class="hover:text-blue-600">Home</a>
+        <a href="#about" class="hover:text-blue-600">About Us</a>
+        <a href="#contact" class="hover:text-blue-600">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <main id="home" class="min-h-screen flex items-center justify-center px-4">
+    <div class="bg-white shadow-2xl rounded-xl p-8 max-w-md w-full space-y-6">
+      <h2 class="text-2xl font-bold text-center">Upload Your File for Timestamping</h2>
+      <div id="dropzone" class="w-full p-6 border-2 border-dashed border-gray-300 rounded-lg text-center text-gray-400 hover:border-blue-400 transition cursor-pointer">
+        <p class="text-sm">Drag and drop your file here or click to select from your device</p>
+        <input id="fileInput" type="file" class="hidden" />
+      </div>
+      <button id="convertBtn" class="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition">Generate Timestamp</button>
+      <div id="result" class="text-center text-green-600 font-medium hidden">Timestamp generated successfully!</div>
+    </div>
+  </main>
+
+  <!-- About -->
+  <section id="about" class="bg-white py-16 px-4">
+    <div class="max-w-4xl mx-auto text-center">
+      <h2 class="text-3xl font-bold mb-4">About AIStamp</h2>
+      <p class="text-lg text-gray-600">AIStamp is a secure tool that adds immutable timestamps to your digital files, ensuring proof of existence. Perfect for intellectual property protection, legal documentation, or simple record keeping, our cryptographic and blockchain-integrated system guarantees that your data is verified and tamper-proof.</p>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer id="contact" class="bg-gray-900 text-white py-6">
+    <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center">
+      <p>&copy; 2025 AIStamp. All rights reserved.</p>
+      <div class="space-x-4 mt-2 md:mt-0">
+        <a href="#" class="hover:underline">Privacy Policy</a>
+        <a href="#" class="hover:underline">Terms of Use</a>
+        <a href="mailto:support@aistamp.io" class="hover:underline">support@aistamp.io</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const dropzone = document.getElementById('dropzone');
+    const fileInput = document.getElementById('fileInput');
+    const result = document.getElementById('result');
+    const convertBtn = document.getElementById('convertBtn');
+    const loadingModal = document.getElementById('loadingModal');
+    const videoModal = document.getElementById('videoModal');
+    const closeVideo = document.getElementById('closeVideo');
+    const videoFrame = document.getElementById('videoFrame');
+
+    const videoURL = "https://www.youtube.com/embed/dQw4w9WgXcQ?start=94&autoplay=1";
+
+    const showLoading = () => loadingModal.classList.remove('hidden');
+    const hideLoading = () => loadingModal.classList.add('hidden');
+
+    const showVideo = () => {
+      videoFrame.src = videoURL;
+      videoModal.classList.remove('hidden');
+    };
+
+    const hideVideo = () => {
+      videoModal.classList.add('hidden');
+      videoFrame.src = "";
+    };
+
+    dropzone.addEventListener('click', () => fileInput.click());
+
+    dropzone.addEventListener('dragover', e => {
+      e.preventDefault();
+      dropzone.classList.add('border-blue-400');
+    });
+
+    dropzone.addEventListener('dragleave', () => {
+      dropzone.classList.remove('border-blue-400');
+    });
+
+    dropzone.addEventListener('drop', e => {
+      e.preventDefault();
+      dropzone.classList.remove('border-blue-400');
+      fileInput.files = e.dataTransfer.files;
+      showLoading();
+      setTimeout(() => {
+        hideLoading();
+        showVideo();
+      }, 1000);
+    });
+
+    fileInput.addEventListener('change', () => {
+      if (fileInput.files.length > 0) {
+        showLoading();
+        setTimeout(() => {
+          hideLoading();
+          showVideo();
+        }, 1000);
+      }
+    });
+
+    convertBtn.addEventListener('click', () => {
+      const file = fileInput.files[0];
+      if (!file) {
+        alert("Please upload a file first.");
+        return;
+      }
+      showLoading();
+      setTimeout(() => {
+        hideLoading();
+        const timestamp = new Date().toLocaleString();
+        result.textContent = `Timestamp for "${file.name}": ${timestamp}`;
+        result.classList.remove('hidden');
+      }, 1500);
+    });
+
+    closeVideo.addEventListener('click', hideVideo);
+  </script>
+</body>
+</html>
